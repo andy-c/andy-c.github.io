@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon32.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon16.ico">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="PHP各个版本之间的更新(自php5.3起)php5.3php5.3不向下兼容的特性1.clearstatcache()默认不再清楚缓存的realpath2.reapath()现在与平台无关。结果是非法的相对路径比如FILE.”&#x2F;..&#x2F;x”将不会工作3.call_user_func()系列函数即使被调用者是一个父类也使用$this4.natsort() natcasesort() usort()">
+<meta property="og:type" content="article">
+<meta property="og:title" content="php各版本之间更新">
+<meta property="og:url" content="http://yoursite.com/2017-11-13-php-feature.html">
+<meta property="og:site_name" content="学习笔记">
+<meta property="og:description" content="PHP各个版本之间的更新(自php5.3起)php5.3php5.3不向下兼容的特性1.clearstatcache()默认不再清楚缓存的realpath2.reapath()现在与平台无关。结果是非法的相对路径比如FILE.”&#x2F;..&#x2F;x”将不会工作3.call_user_func()系列函数即使被调用者是一个父类也使用$this4.natsort() natcasesort() usort()">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-11-12T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-11-05T03:24:03.460Z">
+<meta property="article:author" content="Andy Chen">
+<meta property="article:tag" content="php">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2017-11-13-php-feature.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>php各版本之间更新 | 学习笔记</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">学习笔记</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Do || Die</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017-11-13-php-feature.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Andy Chen">
+      <meta itemprop="description" content="Nothing is impossible for a willing heart">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="学习笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          php各版本之间更新
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-11-13 00:00:00" itemprop="dateCreated datePublished" datetime="2017-11-13T00:00:00+08:00">2017-11-13</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="PHP各个版本之间的更新-自php5-3起"><a href="#PHP各个版本之间的更新-自php5-3起" class="headerlink" title="PHP各个版本之间的更新(自php5.3起)"></a>PHP各个版本之间的更新(自php5.3起)</h2><h3 id="php5-3"><a href="#php5-3" class="headerlink" title="php5.3"></a>php5.3</h3><h4 id="php5-3不向下兼容的特性"><a href="#php5-3不向下兼容的特性" class="headerlink" title="php5.3不向下兼容的特性"></a>php5.3不向下兼容的特性</h4><p>1.clearstatcache()默认不再清楚缓存的realpath<br>2.reapath()现在与平台无关。结果是非法的相对路径比如FILE.”/../x”将不会工作<br>3.call_user_func()系列函数即使被调用者是一个父类也使用$this<br>4.natsort() natcasesort() usort() uasort() uksort() ,array_flip(),array_unique()不能使用对象参数，需要转化为数组<br>5.函数参数为引用变量，如果按值传递，现在将抛出fatal error<br>6.splfileinfo及其相关目录类会移除末尾的/.<br>7.<strong>tostring魔术方法不再接受参数<br>8.现在</strong>call魔术方法在访问私有的和被保护的方法时会被调用<br>9.goto,namespace被保留，不能用作函数名和类名<br>10.php5.3中给函数传递不存在的参数时将返回null,get_class()例外，将返回false<br>11.魔术方法get,Set,unset,isset,and__call需要是public的，不能是static<br><a id="more"></a></p>
+<h4 id="php5-3新特性"><a href="#php5-3新特性" class="headerlink" title="php5.3新特性"></a>php5.3新特性</h4><p>1.添加了命名空间的支持<br>2.添加了后期静态绑定的支持<br>3.添加了跳转标签<br>4.添加了原生闭包的支持<br>5.新增callstatic和invoke两个魔术方法<br>6.调价了newdoc,类似单引号的特性<br>7.可以使用heredoc初始化静态变量和类属性<br>8.可使用双引号声明heredoc<br>9.可以在类外部使用const声明常量<br>10.三元运算符有了简写形式：？：<br>11.http流包装器200-399状态码都视为成功<br>12.动态访问静态方法变为可能<br>13.异常可以被内嵌<br>14.mail()现在支持邮件发送日志</p>
+<h3 id="php5-4"><a href="#php5-4" class="headerlink" title="php5.4"></a>php5.4</h3><h4 id="php5-4不向下兼容的特性"><a href="#php5-4不向下兼容的特性" class="headerlink" title="php5.4不向下兼容的特性"></a>php5.4不向下兼容的特性</h4><p>1.不再支持安全模式。<br>2.移除魔术引号。<br>3.移除全局变量regiter_globals<br>4.调用时的引用传递被移除<br>5.break和continue语句不再接受可变参数<br>6.数组转换成字符串将产生一条e_notice级别的错误，但返回的结果仍是字符串“array”<br>7.null,false,或一个字符串被添加成一个对象的属性时将发出一条e_warning级别的错误，而不是e_strict<br>8.现在参数名使用全局变量将会导致一个致命错误<br>9.当使用两个空数组作为参数时，array_combile()现在返回array()而不是false</p>
+<h4 id="php5-4新特性"><a href="#php5-4新特性" class="headerlink" title="php5.4新特性"></a>php5.4新特性</h4><p>1.新增traits<br>2.新增短数组语法<br>3.新增对函数返回数组成员访问解析<br>4.闭包支持$this<br>5.&lt;?=一直可用<br>6.实例化的时候可以访问类成员<br>7.新增二进制直接量<br>8.session可以追踪文件的上传进度<br>9.内置wenserver</p>
+<h3 id="php5-5"><a href="#php5-5" class="headerlink" title="php5.5"></a>php5.5</h3><h4 id="php5-5不向下兼容的特性"><a href="#php5-5不向下兼容的特性" class="headerlink" title="php5.5不向下兼容的特性"></a>php5.5不向下兼容的特性</h4><p>1.不再支持windowsxp<br>2.pack和unpack做了一些变更，pack现在支持Z格式编码，其表现的行为与a相同，同理unpack现在支持z format<br>3.移除了php logo guids</p>
+<h4 id="php5-5新增特性"><a href="#php5-5新增特性" class="headerlink" title="php5.5新增特性"></a>php5.5新增特性</h4><p>1.新增generators，yield<br>2.久违的finally<br>3.foreach 支持list()<br>4.empty 支持任意表达式<br>5.支持直接调用数组方式<br>6.新的hashapi,password_hash()<br>7.更新gd<br>8.废弃mysql</p>
+<h3 id="php5-6"><a href="#php5-6" class="headerlink" title="php5.6"></a>php5.6</h3><p>####php5.6不向下兼容的特性</p>
+<p>1.使用数组标识符为类定义数组类型的属性时，数组的键不会被覆盖<br>2.json_decode不再接受true,false，null的大写<br>3.必须先设置 CURLOPT_SAFE_UPLOAD 为 FALSE 才能够使用 @file 语法来上传文件。 建议使用 CURLFile 类来上传文件。<br>4.php5.6新特性<br>5.可以使用表达式定义常量<br>6.使用…运算符定义变长参数函数，同时可以进行参数展开<br>7.使用**进行幂运算<br>8.use 可以导入外部的函数和常量<br>9.PHP 的 SAPI 模块中实现了一个 交互式调试器，叫做 phpdbg<br>10.iconv 一废弃<br>11.php://input可以重用，可以降低内存使用<br>12.支持大于2gb的文件上传</p>
+<h3 id="php7-0"><a href="#php7-0" class="headerlink" title="php7.0"></a>php7.0</h3><h4 id="php7-0不向下兼容的特性"><a href="#php7-0不向下兼容的特性" class="headerlink" title="php7.0不向下兼容的特性"></a>php7.0不向下兼容的特性</h4><p>1.变量解析严格按照从左到右的方式<br>2.list() 不再以反向的顺序来进行赋值，空的list()赋值支持已经被移除，list()不再能解开string<br>3.global 只接受简单变量，不再接受可变变量<br>4.foreach不再改变内部数组指针 ，foreach 通过值遍历时，操作的值为数组的副本<br>5.十六进制字符串不再被认为是数字<br>6.filter_var() 函数可以用于检查一个 string 是否含有十六进制数字,并将其转换为integer<br>7.call_user_method() and call_user_method_array()被移除<br>8.socket系列被移除，使用stream系列代替<br>9.new 操作符创建的对象不能以引用方式赋值给变量</p>
+<h4 id="php7-0新特性"><a href="#php7-0新特性" class="headerlink" title="php7.0新特性"></a>php7.0新特性</h4><p>1.标量声明<br>2.返回值类型声明 function test():array<br>3.null合并运算符，三元表达式合并<br>4.组合比较符<br>5.define定义常量数组 define(“test”,[1,2,3])<br>6.增加匿名类<br>7.closure::call，简短干练的暂时绑定一个方法到对象上闭包并调用它<br>8.为unserialize()提供过滤<br>9.intdiv整除</p>
+<h3 id="php7-1"><a href="#php7-1" class="headerlink" title="php7.1"></a>php7.1</h3><h4 id="php7-1不向下兼容的特性"><a href="#php7-1不向下兼容的特性" class="headerlink" title="php7.1不向下兼容的特性"></a>php7.1不向下兼容的特性</h4><p>1.当传递参数过少时将抛出错误<br>2.对字符串使用一个空索引操作符（例如$str[] = $x）将会抛出一个致命错误， 而不是静默地将其转为一个数组。<br>3.析构方法在一个不完整的对象（例如在构造方法中抛出一个异常）上将不再会被调用</p>
+<h4 id="php7-1新特性"><a href="#php7-1新特性" class="headerlink" title="php7.1新特性"></a>php7.1新特性</h4><p>1.可为空（Nullable）类型，类型现在允许为空，当启用这个特性时，传入的参数或者函数返回的结果要么是给定的类型，要么是 null 。可以通过在类型前面加上一个问号来使之成为可为空的。<br>2.Void 函数<br>3.类常量可见性<br>4.多异常捕获处理 catch (FirstException | SecondException $e)<br>5.list()现在支持键名<br>6.http2 server_push 在curl中可以使用</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/php/" rel="tag"># php</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2016-11-06-foreach.html" rel="prev" title="拆分双层foreach">
+      <i class="fa fa-chevron-left"></i> 拆分双层foreach
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#PHP%E5%90%84%E4%B8%AA%E7%89%88%E6%9C%AC%E4%B9%8B%E9%97%B4%E7%9A%84%E6%9B%B4%E6%96%B0-%E8%87%AAphp5-3%E8%B5%B7"><span class="nav-number">1.</span> <span class="nav-text">PHP各个版本之间的更新(自php5.3起)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#php5-3"><span class="nav-number">1.1.</span> <span class="nav-text">php5.3</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#php5-3%E4%B8%8D%E5%90%91%E4%B8%8B%E5%85%BC%E5%AE%B9%E7%9A%84%E7%89%B9%E6%80%A7"><span class="nav-number">1.1.1.</span> <span class="nav-text">php5.3不向下兼容的特性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#php5-3%E6%96%B0%E7%89%B9%E6%80%A7"><span class="nav-number">1.1.2.</span> <span class="nav-text">php5.3新特性</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#php5-4"><span class="nav-number">1.2.</span> <span class="nav-text">php5.4</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#php5-4%E4%B8%8D%E5%90%91%E4%B8%8B%E5%85%BC%E5%AE%B9%E7%9A%84%E7%89%B9%E6%80%A7"><span class="nav-number">1.2.1.</span> <span class="nav-text">php5.4不向下兼容的特性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#php5-4%E6%96%B0%E7%89%B9%E6%80%A7"><span class="nav-number">1.2.2.</span> <span class="nav-text">php5.4新特性</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#php5-5"><span class="nav-number">1.3.</span> <span class="nav-text">php5.5</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#php5-5%E4%B8%8D%E5%90%91%E4%B8%8B%E5%85%BC%E5%AE%B9%E7%9A%84%E7%89%B9%E6%80%A7"><span class="nav-number">1.3.1.</span> <span class="nav-text">php5.5不向下兼容的特性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#php5-5%E6%96%B0%E5%A2%9E%E7%89%B9%E6%80%A7"><span class="nav-number">1.3.2.</span> <span class="nav-text">php5.5新增特性</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#php5-6"><span class="nav-number">1.4.</span> <span class="nav-text">php5.6</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#php7-0"><span class="nav-number">1.5.</span> <span class="nav-text">php7.0</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#php7-0%E4%B8%8D%E5%90%91%E4%B8%8B%E5%85%BC%E5%AE%B9%E7%9A%84%E7%89%B9%E6%80%A7"><span class="nav-number">1.5.1.</span> <span class="nav-text">php7.0不向下兼容的特性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#php7-0%E6%96%B0%E7%89%B9%E6%80%A7"><span class="nav-number">1.5.2.</span> <span class="nav-text">php7.0新特性</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#php7-1"><span class="nav-number">1.6.</span> <span class="nav-text">php7.1</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#php7-1%E4%B8%8D%E5%90%91%E4%B8%8B%E5%85%BC%E5%AE%B9%E7%9A%84%E7%89%B9%E6%80%A7"><span class="nav-number">1.6.1.</span> <span class="nav-text">php7.1不向下兼容的特性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#php7-1%E6%96%B0%E7%89%B9%E6%80%A7"><span class="nav-number">1.6.2.</span> <span class="nav-text">php7.1新特性</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Andy Chen"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Andy Chen</p>
+  <div class="site-description" itemprop="description">Nothing is impossible for a willing heart</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/andy-c" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;andy-c" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:cylbdda@gmail.com" title="E-Mail → mailto:cylbdda@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Andy Chen</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
